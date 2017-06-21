@@ -20,7 +20,8 @@ import copy
 from collections import deque
 
 class Tree:
-    def __init__(self, cargo, level = None ,left=None, right=None):
+    def __init__(self, cargo, weight = None ,left=None, right=None):
+        self.weight = weight
         self.cargo = cargo
         self.left  = left
         self.right = right
@@ -31,42 +32,49 @@ class Tree:
 
 def make_tree():
     
-    t = Tree("S", 0 , Tree("A", 1, Tree("B",2, Tree("C", 3), Tree("E", 3, Tree("D", 4), Tree("F", 4, Tree("G",5)))),
-    Tree("D", 2, Tree("E",3, Tree("B",4, Tree("C",5)), Tree("F",4, Tree("G",5))))), Tree("D",1, Tree("A",2, Tree("B",3, Tree("C",4),
-    Tree("E",4, Tree("F",5, Tree("G",6))))), Tree("E",2, Tree("B",3, Tree("A",4), Tree("C",4)), Tree("F",3, Tree("G",4)))))
-
-#    t = Tree("S", 0 , Tree("A", 1, Tree("B",2, Tree("C", 3), Tree("E", 3, Tree("D"), Tree("F", Tree("G")))),
- #   Tree("D", Tree("E", Tree("B", Tree("C")), Tree("F", Tree("G"))))), Tree("D",1, Tree("A", Tree("B", Tree("C"),
-  #  Tree("E", Tree("F", Tree("G"))))), Tree("E", Tree("B", Tree("A"), Tree("C")), Tree("F", Tree("G")))))
-
+    t = Tree("S", 0 , Tree("A", 3, Tree("B",4, Tree("C", 4), Tree("E", 5, Tree("D", 2), Tree("F", 4, Tree("G",3)))),
+    Tree("D", 5, Tree("E",2, Tree("B",5, Tree("C",4)), Tree("F",4, Tree("G",3))))), Tree("D",4, Tree("A",5, Tree("B",4, Tree("C",4),
+    Tree("E",5, Tree("F",4, Tree("G",3))))), Tree("E",2, Tree("B",5, Tree("A",4), Tree("C",4)), Tree("F",4, Tree("G",3)))))
 
     return t
 
 
+def print_tree(q):
+    
+    print("The following nodes were selected")
+    while q.qsize() !=0 :
+        t = q.get()
+        #print(q.qsize())
+        print(t.cargo)
+    
+
 def sort(q):
     
     
-    q2 = queue.PriorityQueue
-    q2.queue = copy.deepcopy(q.queue)
+    q2 = queue.Queue()
 
     i = q.qsize()
-    
+    l = list(q.queue)
+
     while i > 0:
         temp = q.get()
-        
-        print("Cargo",temp.cargo)
-        #q2.put(temp.cargo, temp)
+
+        l.sort(key=lambda x:x.weight, reverse = True)
+        q2.put(l[i-1])
+
         i-=1
 
-    q.queue = copy.deepcopy(q2.queue)
-    
+    #q.queue = copy.deepcopy(q2.queue)
+    return q2
 
 
 def hill_climb(q):
-    print ("Hill climb")
+    #print ("Hill climb")
 
     t = make_tree()    
     
+    goalQueue = queue.Queue()
+
     goalNode = "G"
 
     #Enter root into a queue
@@ -74,18 +82,18 @@ def hill_climb(q):
  
     #While there are elements in the queue
     while q.qsize() != 0:
-        print ("Hill climb")
+        #print ("Hill climb")
         t = q.get()
-               
-
+        goalQueue.put(t)
+        
         #Determine if first element is goal node
-   
-        print("Current node:",t.cargo)
-
         
         #2a if the first element is the goal node, break
         if t.cargo == goalNode:
             print("Goal found! Success!")
+                      
+            print_tree(goalQueue)
+            
             break;
     
         #2b else, 
@@ -98,7 +106,7 @@ def hill_climb(q):
                 q.put(t.right)
 
             #Sort!
-            sort(q)
+            q = sort(q)
             
 
 def main():
