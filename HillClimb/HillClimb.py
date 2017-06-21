@@ -2,7 +2,7 @@
 # CSC 547 Artificial Intelligence
 # Lecturer: Sung Shin
 # 
-# Date: 6/17/2017
+# Date: 6/21/2017
 # Author: Markus Haugsdal
 #
 # Resources used: https://www.tutorialspoint.com/python/index.htm
@@ -12,12 +12,14 @@
 # Due date: 6-21
 #
 #
-# This is an implementation of the Beam Search Algorithm, using the test data from figure 4.2 in the class notes.
+# This is an implementation of the Hill Climbing Algorithm, using the test data from figure 4.2 in the class notes.
 
 
 import queue
 import copy
 from collections import deque
+
+# Tree class. 
 
 class Tree:
     def __init__(self, cargo, weight = None ,left=None, right=None):
@@ -29,6 +31,8 @@ class Tree:
     def __str__(self):
         return str(self.cargo)
 
+# Function to create tree from Fig 4.2 / 4.1
+# (Messy)
 
 def make_tree():
     
@@ -38,6 +42,7 @@ def make_tree():
 
     return t
 
+# Simplified print tree function
 
 def print_tree(q):
     
@@ -47,6 +52,9 @@ def print_tree(q):
         #print(q.qsize())
         print(t.cargo)
     
+# Sort function
+# Input: Queue
+# Output: Sorted Queue
 
 def sort(q):
     
@@ -67,6 +75,9 @@ def sort(q):
     #q.queue = copy.deepcopy(q2.queue)
     return q2
 
+# Hill climbing algorithm.
+# Input: Queue with root node of tree
+# Output: Void
 
 def hill_climb(q):
     #print ("Hill climb")
@@ -74,7 +85,6 @@ def hill_climb(q):
     t = make_tree()    
     
     goalQueue = queue.Queue()
-
     goalNode = "G"
 
     #Enter root into a queue
@@ -82,7 +92,7 @@ def hill_climb(q):
  
     #While there are elements in the queue
     while q.qsize() != 0:
-        #print ("Hill climb")
+   
         t = q.get()
         goalQueue.put(t)
         
@@ -108,7 +118,6 @@ def hill_climb(q):
             #Sort!
             q = sort(q)
             
-
 def main():
 
     q = queue.LifoQueue()
