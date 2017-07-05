@@ -15,7 +15,7 @@
 # This is an implementation of the Hill Climbing Algorithm, using the test data from figure 4.2 in the class notes.
 
 
-import queue
+import Queue
 import copy
 from collections import deque
 
@@ -59,7 +59,7 @@ def print_tree(q):
 def sort(q):
     
     
-    q2 = queue.Queue()
+    q2 = Queue.Queue()
 
     i = q.qsize()
     l = list(q.queue)
@@ -84,7 +84,7 @@ def hill_climb(q):
 
     t = make_tree()    
     
-    goalQueue = queue.Queue()
+    goalQueue = Queue.Queue()
     goalNode = "G"
 
     #Enter root into a queue
@@ -120,7 +120,7 @@ def hill_climb(q):
             
 def main():
 
-    q = queue.LifoQueue()
+    q = Queue.LifoQueue()
     hill_climb(q)
 
 main()
